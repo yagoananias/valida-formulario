@@ -24,33 +24,26 @@ function emailValido(email) {
     return re.test(String(email).toLowerCase());
 }
 
+//Confirma campos obrigatórios
+function confirmaCampo(arrayEntradas) {
+    arrayEntradas.forEach(function(campos) {
+        console.log(campos.id);
+        if (campos.value.trim() === '') {
+            mostraErro(campos, `${pegaNomeCampo(campos)} é obrigatório`);
+        } else {
+            mostraSucesso(campos);            
+        }
+    });
+}
+
+//Pega o nome do campo
+function pegaNomeCampo(campo) {
+    return campo.id.charAt(0).toUpperCase() + campo.id.slice(1);
+}
+
 // Listeners
 formulario.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    if(usuario.value === '') {
-        mostraErro(usuario, 'Campo Obrigatório');
-    } else {
-        mostraSucesso(usuario);
-    }
-
-    if(email.value === '') {
-        mostraErro(email, 'Campo Obrigatório');
-    } else if(!emailValido(email.value, 'Email Inválido')) {
-        mostraErro(email, 'Email incorreto')
-    } else {
-        mostraSucesso(email);
-    }
-
-    if(senha.value === '') {
-        mostraErro(senha, 'Campo Obrigatório');
-    } else {
-        mostraSucesso(senha);
-    }
-
-    if(senha2.value === '') {
-        mostraErro(senha2, 'Campo Obrigatório');
-    } else {
-        mostraSucesso(senha2);
-    }        
+    confirmaCampo([usuario, email, senha, senha2]);
 });
