@@ -27,13 +27,36 @@ function emailValido(email) {
 //Confirma campos obrigatórios
 function confirmaCampo(arrayEntradas) {
     arrayEntradas.forEach(function(campos) {
-        console.log(campos.id);
         if (campos.value.trim() === '') {
             mostraErro(campos, `${pegaNomeCampo(campos)} é obrigatório`);
         } else {
             mostraSucesso(campos);            
         }
     });
+}
+
+//Confirma Tamanho da Entrada
+function confirmaTamanho(campos, min, max) {
+    if (campos.value.length < min) {
+      mostraErro(
+        campos,
+        `${pegaNomeCampo(campos)} deve ter no mínimo ${min} caracteres`
+      );
+    } else if (campos.value.length > max) {
+      mostraErro(
+        campos,
+        `${pegaNomeCampo(campos)} deve ter no máximo ${max} caracteres`
+      );
+    } else {
+      mostraSucesso(campos);
+    }
+  }
+
+// Senhas Combinam
+function confirmaSenhasCombinam(input1, input2) {
+    if(input1.value !== input2.value) {
+        mostraErro(input2, 'Senhas Não Combinam');
+    }
 }
 
 //Pega o nome do campo
@@ -46,4 +69,9 @@ formulario.addEventListener('submit', function(e) {
     e.preventDefault();
 
     confirmaCampo([usuario, email, senha, senha2]);
+    confirmaTamanho(usuario, 3, 10);
+    confirmaTamanho(email, 7, 15);
+    confirmaTamanho(senha, 6, 25);
+    confirmaSenhasCombinam(senha, senha2);
+    //confirmaTamanho(senha2, 6, 25);
 });
